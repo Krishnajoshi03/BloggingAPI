@@ -1,0 +1,50 @@
+<div class="home-container">
+  <div class="home-inner">
+    <header class="home-header">
+      <h1>Welcome to the Blogging Platform</h1>
+      <p>Your gateway to share and explore amazing content</p>
+    </header>
+
+    <main class="home-content">
+      <h2>Latest Posts</h2>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="posts-grid" role="list">
+        <div *ngFor="let i of [1,2,3,4,5,6]" class="skeleton-card">
+          <p-skeleton width="100%" height="12rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="80%" height="1.5rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="100%" height="1rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="60%" height="1rem"></p-skeleton>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error && !loading" class="error-container">
+        <p-message severity="error" [text]="error" styleClass="w-full mb-3"></p-message>
+        <button pButton label="Retry" (click)="retry()"></button>
+      </div>
+
+      <!-- Posts Grid -->
+      <div *ngIf="!loading && !error">
+        <div class="posts-grid" role="list" *ngIf="posts.length > 0">
+          <app-feed-card role="listitem" *ngFor="let post of posts" [post]="post"></app-feed-card>
+        </div>
+
+        <div *ngIf="posts.length === 0" class="empty-state">
+          <p>No posts available yet.</p>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="posts.length > 0 && totalPages > 1" class="pagination-container">
+          <p-paginator
+            [rows]="pageSize"
+            [totalRecords]="totalRecords"
+            [first]="currentPage * pageSize"
+            (onPageChange)="onPageChange($event)"
+            [showFirstLastIcon]="true"
+          ></p-paginator>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

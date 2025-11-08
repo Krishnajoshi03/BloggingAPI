@@ -1,0 +1,52 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="visual">
+            <img src="/assets/blogLogo.png" alt="Blog illustration" />
+        </div>
+
+        <form class="form" (ngSubmit)="onSubmit()" #loginForm="ngForm" novalidate>
+            <h2>Welcome back</h2>
+            <p class="subtitle">Sign in to continue to your blogging dashboard</p>
+
+            <label for="username">Username</label>
+            <input
+                id="username"
+                name="username"
+                pInputText
+                type="text"
+                [(ngModel)]="userName"
+                required
+                placeholder="Enter your username"
+            />
+
+            <label for="password">Password</label>
+            <input
+                id="password"
+                name="password"
+                pInputText
+                type="password"
+                [(ngModel)]="password"
+                required
+                placeholder="Enter your password"
+            />
+
+            <div class="row-between">
+                <label class="checkbox">
+                    <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+                    Remember me
+                </label>
+
+                <a class="forgot" href="#">Forgot?</a>
+            </div>
+
+            <div class="actions">
+                <button pButton type="submit" label="Sign in" [disabled]="!userName || !password"></button>
+            </div>
+
+            <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+            <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+
+            <p class="signup">Don't have an account? <a href="#">Sign up</a></p>
+        </form>
+    </div>
+</div>

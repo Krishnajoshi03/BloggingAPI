@@ -1,0 +1,118 @@
+<div class="post-edit-container">
+  <div class="post-edit-content">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <p>Loading post...</p>
+    </div>
+
+    <!-- Permission Error -->
+    <div *ngIf="permissionError && !loading" class="error-container">
+      <h2>Permission Denied</h2>
+      <p>{{ error }}</p>
+      <button pButton label="Go Back" routerLink="/home"></button>
+    </div>
+
+    <!-- Edit Form -->
+    <div *ngIf="!loading && !permissionError && post">
+      <h1>Edit Post</h1>
+
+      <form (ngSubmit)="onSubmit()" #editForm="ngForm">
+        <div class="form-group">
+          <label for="title">Title *</label>
+          <input
+            id="title"
+            name="title"
+            pInputText
+            [(ngModel)]="title"
+            (input)="onFieldChange()"
+            required
+            placeholder="Enter post title"
+            class="w-full"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            [ngModel]="selectedCategory?.id ?? ''"
+            (ngModelChange)="onCategoryChange($event)"
+            (change)="onFieldChange()"
+            class="w-full category-select"
+          >
+            <option value="">No category</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.title }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="content">Content *</label>
+          <textarea
+            id="content"
+            name="content"
+            [(ngModel)]="content"
+            (input)="onFieldChange()"
+            required
+            rows="15"
+            placeholder="Write your post content here..."
+            class="w-full content-textarea"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Featured Image</label>
+          <div *ngIf="!imagePreview" class="image-upload">
+            <p-fileUpload
+              mode="basic"
+              accept="image/*"
+              [maxFileSize]="5000000"
+              (onSelect)="onImageSelect($event)"
+              chooseLabel="Choose Image"
+              class="w-full"
+            ></p-fileUpload>
+            <small class="help-text">Maximum file size: 5MB</small>
+          </div>
+          <div *ngIf="imagePreview" class="image-preview">
+            <img [src]="imagePreview" alt="Preview" />
+            <button
+              pButton
+              label="Remove"
+              icon="pi pi-times"
+              (click)="removeImage()"
+              class="p-button-text"
+            ></button>
+          </div>
+          <p-progressBar *ngIf="uploading" [value]="imageUploadProgress"></p-progressBar>
+        </div>
+
+        <p-message
+          severity="error"
+          [text]="error"
+          *ngIf="error"
+          styleClass="w-full mb-3"
+        ></p-message>
+
+        <div class="form-actions">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            routerLink="/home"
+            class="p-button-secondary"
+          ></button>
+          <button
+            pButton
+            type="submit"
+            label="Update Post"
+            [disabled]="!title.trim() || !content.trim() || saving || uploading"
+            [loading]="saving"
+          ></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<p-confirmDialog></p-confirmDialog>
+

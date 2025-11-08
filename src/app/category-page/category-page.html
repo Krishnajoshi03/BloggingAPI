@@ -1,0 +1,59 @@
+<div class="category-container">
+  <div class="category-content">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <p-skeleton width="30%" height="2rem" styleClass="mb-4"></p-skeleton>
+      <div class="posts-grid" role="list">
+        <div *ngFor="let i of [1,2,3,4,5,6]" class="skeleton-card">
+          <p-skeleton width="100%" height="12rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="80%" height="1.5rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="100%" height="1rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="60%" height="1rem"></p-skeleton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-container">
+      <h2>Category Not Found</h2>
+      <p>{{ error }}</p>
+      <div class="error-actions">
+        <button pButton label="Retry" (click)="retry()" *ngIf="categoryId"></button>
+        <button pButton label="Go Home" (click)="goHome()" class="p-button-secondary"></button>
+      </div>
+    </div>
+
+    <!-- Category Content -->
+    <div *ngIf="!loading && !error">
+      <header class="category-header">
+        <h1>{{ category?.title || 'Category' }}</h1>
+        <button pButton label="Back to Home" routerLink="/home" class="p-button-text"></button>
+      </header>
+
+      <!-- Empty State -->
+      <div *ngIf="posts.length === 0" class="empty-state">
+        <p>No posts found in this category.</p>
+        <button pButton label="Browse All Posts" routerLink="/home"></button>
+      </div>
+
+      <!-- Posts Grid -->
+      <div *ngIf="posts.length > 0">
+        <div class="posts-grid" role="list">
+          <app-feed-card role="listitem" *ngFor="let post of posts" [post]="post"></app-feed-card>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="totalPages > 1" class="pagination-container">
+          <p-paginator
+            [rows]="pageSize"
+            [totalRecords]="totalRecords"
+            [first]="currentPage * pageSize"
+            (onPageChange)="onPageChange($event)"
+            [showFirstLastIcon]="true"
+          ></p-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

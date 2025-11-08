@@ -1,0 +1,87 @@
+:root{
+	--bg: #f6f9fc;
+	--card: #ffffff;
+	--muted: #6b7280;
+	--accent: #2563eb;
+}
+
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;margin:0;background:var(--bg);}
+
+.login-container{
+	min-height:100vh;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:24px;
+}
+
+.login-card{
+	width:100%;
+	max-width:980px;
+	display:grid;
+	grid-template-columns:1fr 420px;
+	gap:24px;
+	align-items:center;
+}
+
+.visual{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+.visual img{width:100%;max-width:640px;height:auto;border-radius:12px;box-shadow:0 6px 20px rgba(15,23,42,0.06)}
+
+.form{
+	background:var(--card);
+	border-radius:12px;
+	padding:28px;
+	box-shadow:0 6px 24px rgba(12,20,40,0.06);
+	display:flex;
+	flex-direction:column;
+	gap:12px;
+}
+
+.form h2{margin:0 0 4px 0}
+.subtitle{color:var(--muted);font-size:13px;margin:0 0 12px}
+
+.form label{font-size:13px;color:#0f1724;margin-top:6px}
+.form input[type="text"],.form input[type="password"]{
+	padding:10px 12px;border-radius:8px;border:1px solid #E6EEF8;background:#fff;outline:none;font-size:14px
+}
+.form input[type="text"]:focus,.form input[type="password"]:focus{box-shadow:0 0 0 4px rgba(37,99,235,0.06);border-color:var(--accent)}
+
+.row-between{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.checkbox{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+.forgot{color:var(--accent);text-decoration:none;font-size:13px}
+.actions{margin-top:10px}
+.actions button, .actions .p-button {
+	width:100%;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	gap:8px;
+	padding:12px 14px;
+	border-radius:999px; /* pill */
+	background:#1f6fe4;
+	color:black;
+	border:none;
+	box-shadow:0 8px 20px rgba(37,99,235,0.18);
+	cursor:pointer;
+	font-weight:600;
+	font-size:15px;
+}
+.actions button:hover, .actions .p-button:hover{ background:#1f6fe4; box-shadow:0 10px 26px rgba(31,111,228,0.18); }
+.actions button:disabled, .actions .p-button[disabled]{ opacity:0.65; cursor:not-allowed; box-shadow:none; }
+.error{color:#b91c1c;font-size:13px}
+.success{color:#065f46;font-size:13px}
+.signup{font-size:13px;color:var(--muted);margin-top:6px}
+.signup a{color:var(--accent);text-decoration:none}
+
+@media (max-width:880px){
+	.login-card{grid-template-columns:1fr;max-width:520px}
+	.visual{order:-1;padding-bottom:12px}
+}
+@media (max-width:420px){
+	.form{padding:20px}
+}

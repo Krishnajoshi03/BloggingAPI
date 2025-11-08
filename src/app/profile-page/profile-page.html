@@ -1,0 +1,67 @@
+<div class="profile-container">
+  <div class="profile-content">
+    <!-- User Info Section -->
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <span class="avatar-text">{{ getUserInitials() }}</span>
+      </div>
+      <div class="profile-info">
+        <h1>{{ user?.email || user?.userName || 'User' }}</h1>
+        <p class="profile-bio" *ngIf="user?.bio">{{ user.bio }}</p>
+        <p class="profile-email" *ngIf="user?.email">{{ user.email }}</p>
+      </div>
+    </div>
+
+    <!-- My Posts Section -->
+    <div class="posts-section">
+      <div class="section-header">
+        <h2>My Posts</h2>
+        <button pButton label="Create New Post" routerLink="/create" icon="pi pi-plus"></button>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-state">
+        <p>Loading your posts...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error && !loading" class="error-state">
+        <p>{{ error }}</p>
+        <button pButton label="Retry" (click)="loadUserPosts()"></button>
+      </div>
+
+      <!-- Posts List -->
+      <div *ngIf="!loading && !error">
+        <div *ngIf="posts.length === 0" class="empty-state">
+          <p>You haven't created any posts yet.</p>
+          <button pButton label="Create Your First Post" routerLink="/create"></button>
+        </div>
+
+        <div *ngIf="posts.length > 0" class="posts-list">
+          <div class="post-item" *ngFor="let post of posts">
+            <app-feed-card [post]="post"></app-feed-card>
+            <div class="post-actions">
+              <button
+                pButton
+                label="Edit"
+                icon="pi pi-pencil"
+                (click)="editPost(post.id)"
+                class="p-button-sm"
+              ></button>
+              <button
+                pButton
+                label="Delete"
+                icon="pi pi-trash"
+                (click)="deletePost(post)"
+                class="p-button-sm p-button-danger"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-confirmDialog></p-confirmDialog>
+

@@ -1,0 +1,90 @@
+<div class="post-detail-container">
+  <div class="post-detail-content">
+    <!-- Loading State -->
+  
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-container">
+      <h2>Post Not Found</h2>
+      <p>{{ error }}</p>
+      <button pButton label="Go Home" (click)="goHome()"></button>
+    </div>
+
+    <!-- Post Content -->
+    <article *ngIf="post && !loading" class="post-article">
+      <header class="post-header">
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-meta">
+          <span class="author">By {{ post.authorName }}</span>
+          <span class="dot">•</span>
+          <time class="date">{{ post.publishedAt | date:'mediumDate' }}</time>
+          <span class="dot" *ngIf="post.tags && post.tags.length > 0">•</span>
+          <div class="tags" *ngIf="post.tags && post.tags.length > 0">
+            <span class="tag" *ngFor="let tag of post!.tags">{{ tag }}</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="post-image" *ngIf="post.imageUrl">
+        <img [src]="post.imageUrl" [alt]="post.title" />
+      </div>
+
+      <div class="post-body" [innerHTML]="post.content"></div>
+
+      <footer class="post-footer">
+        <div class="comments-section">
+          <h3 class="comments-title">Comments ({{ post.commentsCount ?? 0 }})</h3>
+
+          <!-- Comment Form -->
+          <div *ngIf="isAuthenticated" class="comment-form">
+            <textarea
+              [(ngModel)]="commentContent"
+              placeholder="Write a comment..."
+              rows="4"
+              class="comment-input"
+            ></textarea>
+            <button
+              pButton
+              label="Post Comment"
+              (click)="submitComment()"
+              [disabled]="!commentContent.trim()"
+              class="comment-submit"
+            ></button>
+          </div>
+
+          <div *ngIf="!isAuthenticated" class="login-prompt">
+            <p>Please <a routerLink="/login">log in</a> to leave a comment.</p>
+          </div>
+
+          <!-- Comments List -->
+          <div *ngIf="commentsLoading" class="comments-loading">
+            <p-skeleton width="100%" height="4rem" styleClass="mb-2" *ngFor="let i of [1,2,3]"></p-skeleton>
+          </div>
+
+          <div *ngIf="!commentsLoading && comments.length === 0" class="no-comments">
+            <p>No comments yet. Be the first to comment!</p>
+          </div>
+
+          <div class="comments-list" *ngIf="!commentsLoading && comments.length > 0">
+            <div class="comment-item" *ngFor="let comment of comments">
+              <div class="comment-header">
+                <strong class="comment-author">{{ comment.authorName }}</strong>
+                <time class="comment-date">{{ comment.createdAt | date:'short' }}</time>
+                <button
+                  *ngIf="canDeleteComment(comment)"
+                  pButton
+                  label="Delete"
+                  icon="pi pi-trash"
+                  class="p-button-text p-button-sm comment-delete"
+                  (click)="deleteComment(comment)"
+                ></button>
+              </div>
+              <div class="comment-content">{{ comment.content }}</div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </article>
+  </div>
+</div>
+
